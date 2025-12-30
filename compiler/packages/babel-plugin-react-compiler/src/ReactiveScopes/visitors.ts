@@ -8,6 +8,7 @@
 import {
   HIRFunction,
   InstructionId,
+  makeInstructionId,
   Place,
   PrunedReactiveScopeBlock,
   ReactiveBlock,
@@ -234,6 +235,9 @@ export class ReactiveFunctionVisitor<TState = void> {
     for (const param of fn.params) {
       const place = param.kind === 'Identifier' ? param : param.place;
       this.visitParam(place, state);
+    }
+    for (const context of fn.context) {
+      this.visitPlace(makeInstructionId(0), context, state);
     }
     for (const [, block] of fn.body.blocks) {
       for (const instr of block.instructions) {
